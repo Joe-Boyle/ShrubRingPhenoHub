@@ -6,7 +6,7 @@
 ########################################
 
 # Set working directory
-setwd("/Users/joeboyle/Desktop/Uni/Blissertation")
+setwd("/Users/joeboyle/Desktop/Uni/Blissertation/Data")
 
 # Libraries ---------------------------------------------------------------
 library(dplyr)
@@ -101,7 +101,7 @@ AgeData <- read.csv("AgeData.csv")
 AgeData$Plot <- as.factor(AgeData$Plot)
 
 # NDVI data
-load("/Users/joeboyle/Downloads/MODIS_qik(1).RData")
+load("MODIS_qik(1).RData")
 qiki_modis <- greenup.qik %>% filter(Plot == "HV") %>%
   dplyr::select(Year, ndvi.date.max)
 
