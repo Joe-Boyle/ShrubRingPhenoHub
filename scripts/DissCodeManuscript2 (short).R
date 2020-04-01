@@ -491,19 +491,19 @@ rownames(results) <- c("null", AIC_var)
 P2model <- lmer(darea ~ P2 + (1|Plot) + (1|Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
   P2plot <- ggplot(P2model, aes(P2, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
     geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
-    labs(x = "Emergence", y = "Relative growth")
+    labs(x = "Emergence (doy)", y = "Relative growth")
 P5model <- lmer(darea ~ P5 + (1|Plot) + (1|Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
   P5plot <- ggplot(P5model, aes(P5, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
     geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
-    labs(x = "Senescence", y = "Relative growth")
+    labs(x = "Senescence (doy)", y = "Relative growth")
 Pxmodel <- lmer(darea ~ Px + (1|Plot) + (1|Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
   Pxplot <- ggplot(Pxmodel, aes(Px, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
     geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
-    labs(x = "GSL", y = "Relative growth")
+    labs(x = "GSL (days)", y = "Relative growth")
 pPxmodel <- lmer(darea ~ pPx + (1|Plot) + (1|Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
   pPxplot <- ggplot(pPxmodel, aes(pPx, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
     geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
-    labs(x = "Previous GSL", y = "Relative growth")
+    labs(x = "Previous GSL (days)", y = "Relative growth")
 grid.arrange(P2plot, P5plot, Pxplot, pPxplot)
   
 # Plot overall figure
