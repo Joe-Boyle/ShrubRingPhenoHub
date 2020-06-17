@@ -1,5 +1,5 @@
 ########################################
-# Phonology/growth Manuscript code   ###
+# Phenology/growth Manuscript code   ###
 # Joe Boyle                          ###
 # June 2020                          ###
 # Adapted from Sandra Angers-Blondin ### 
