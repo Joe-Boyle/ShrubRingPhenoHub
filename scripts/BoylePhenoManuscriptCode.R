@@ -1,7 +1,7 @@
 ########################################
 # Phonology/growth Manuscript code   ###
 # Joe Boyle                          ###
-# April 2020                         ###
+# June 2020                          ###
 # Adapted from Sandra Angers-Blondin ### 
 ########################################
 
