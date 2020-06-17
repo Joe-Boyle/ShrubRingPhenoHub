@@ -5,10 +5,7 @@
 # Adapted from Sandra Angers-Blondin ### 
 ########################################
 
-# Set working directory
-setwd("/Users/joeboyle/Desktop/Uni/Blissertation/Data")
-
-# Libraries ---------------------------------------------------------------
+# Packages ---------------------------------------------------------------
 library(dplyr)
 library(ggplot2)
 library(grid)
@@ -78,36 +75,36 @@ theme_JBangled <- function(){
 # Import data -------------------------------------------------------------
 
 # Ring width data
-dendro <- read.csv("RingWidthData.csv")
+dendro <- read.csv("data/RingWidthData.csv")
 
 # Pith data
-pithdata <- read.csv("PithData.csv")
+pithdata <- read.csv("data/PithData.csv")
 
 # Microscope calibration data
-cal_rad <- read.csv("CalData.csv") # this is the magnification of each radius
-cal_table <- read.csv("CalTable.csv") # this is the conversion factor, in pixels/mm
+cal_rad <- read.csv("data/CalData.csv") # this is the magnification of each radius
+cal_table <- read.csv("data/CalTable.csv") # this is the conversion factor, in pixels/mm
 
 # Climate data
 load("climQHI.Rdata")
-QikTempStart <- read.csv("Qiktemp.csv")
+QikTempStart <- read.csv("data/Qiktemp.csv")
 
-load("cru_pre_shrub_site_df.RData")
+load("data/cru_pre_shrub_site_df.RData")
 precipdata <- cru.pre.shrub.site.df %>% filter(site_id == "s3")
 
 # Load the pheno data
-load("qiki_phen.Rda")
+load("data/qiki_phen.Rda")
 
 # Age Data
-AgeData <- read.csv("AgeData.csv")
+AgeData <- read.csv("data/AgeData.csv")
 AgeData$Plot <- as.factor(AgeData$Plot)
 
 # NDVI data
-load("MODIS_qik(1).RData")
+load("data/MODIS_qik(1).RData")
 qiki_modis <- greenup.qik %>% filter(Plot == "HV") %>%
   dplyr::select(Year, ndvi.date.max)
 
 # Sea ice data
-sea_ice_data <- read.csv("seaice.csv")
+sea_ice_data <- read.csv("data/seaice.csv")
 sea_ice_data <- sea_ice_data %>% na.omit() %>% filter (year < 2016 & year > 1990)
 
 # determine max and 85% of sea ice extent
