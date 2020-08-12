@@ -1,11 +1,11 @@
 ########################################
-# Phenology/growth Manuscript code   ###
+# Phonology/growth Manuscript code   ###
 # Joe Boyle                          ###
-# June 2020                          ###
+# 12/08/2020                         ###
 # Adapted from Sandra Angers-Blondin ### 
 ########################################
 
-# Packages ---------------------------------------------------------------
+# Libraries ---------------------------------------------------------------
 library(dplyr)
 library(ggplot2)
 library(grid)
@@ -85,7 +85,7 @@ cal_rad <- read.csv("data/CalData.csv") # this is the magnification of each radi
 cal_table <- read.csv("data/CalTable.csv") # this is the conversion factor, in pixels/mm
 
 # Climate data
-load("climQHI.Rdata")
+load("data/climQHI.Rdata")
 QikTempStart <- read.csv("data/Qiktemp.csv")
 
 load("data/cru_pre_shrub_site_df.RData")
@@ -99,9 +99,8 @@ AgeData <- read.csv("data/AgeData.csv")
 AgeData$Plot <- as.factor(AgeData$Plot)
 
 # NDVI data
-load("data/MODIS_qik(1).RData")
-qiki_modis <- greenup.qik %>% filter(Plot == "HV") %>%
-  dplyr::select(Year, ndvi.date.max)
+load("data/MODIS6_ShrubHub_ITEX.RData")
+qiki_modis <- MODIS %>% filter(site_name == "QHI") %>% na.omit() %>% group_by(year) %>% summarise(NDVI = max(NDVI))
 
 # Sea ice data
 sea_ice_data <- read.csv("data/seaice.csv")
@@ -315,7 +314,7 @@ dendroclim2 <- merge(seaice, dendroclim2, by="Year", all = TRUE) %>%
 # Select key variables
 dendroclim2 <- dplyr::select(dendroclim2, Year, Plot, Individual, drw, rw, area, darea, count,
                              P1, P2, P5, Px, pPx, ptsummer, ptautumn, twinter, tspring, tsummer, tautumn, ppsummer, ppautumn, 
-                             pwinter, pspring, psummer, pautumn, ndvi.date.max, min.extent, onset.melt)
+                             pwinter, pspring, psummer, pautumn, NDVI, min.extent, onset.melt)
 names(dendroclim2)[26] <- "NDVImodis"
 
 ## Remove 2016 data (growth not complete) and prior to 2001 (insufficient rw)
