@@ -74,8 +74,6 @@ theme_JBangled <- function(){
 
 # Import data -------------------------------------------------------------
 
-#setwd("/Volumes/Time Machine Backups/uni/Blissertation")
-
 # Ring width data
 dendro <- read.csv("data/RingWidthData.csv")
 
@@ -90,8 +88,7 @@ cal_table <- read.csv("data/CalTable.csv") # this is the conversion factor, in p
 load("data/climQHI.Rdata")
 QikTempStart <- read.csv("data/QikTemp.csv")
 
-load("data/cru_pre_shrub_site_df.RData")
-precipdata <- cru.pre.shrub.site.df %>% filter(site_id == "s3")
+ERA <- read.csv("data/ERA_Qik.csv")
 
 # Load the pheno data
 load("data/qiki_phen.Rda")
@@ -290,13 +287,13 @@ dendroclim <- merge(dendro_av, climyears, by = "Year", all = TRUE) # this adds t
 dendroclim <- merge(dendroclim, pheno, by = "Year", all = TRUE)
 
 # Add precipitation data
-precipdata <- spread(precipdata, month, value) %>% dplyr::select(-site_id, -day, -variable)
-names(precipdata) <- c("Year", "pjan", "pfeb", "pmar", "papr", "pmay", "pjun", "pjul", "paug",
+ERAdata <- spread(ERA,month,value)
+names(ERAdata) <- c("Year", "pjan", "pfeb", "pmar", "papr", "pmay", "pjun", "pjul", "paug",
                        "psep", "poct", "pnov", "pdec")
-precipdata <- precipdata %>% mutate(ppjun = lag(pjun, 1), ppjul = lag(pjul, 1),
-                                    ppaug = lag(paug, 1), ppsep = lag(psep, 1),
-                                    ppoct = lag(poct, 1), ppnov = lag(pnov, 1),
-                                    ppdec = lag(pdec, 1))
+precipdata <- ERAdata %>% mutate(ppjun = lag(pjun, 1), ppjul = lag(pjul, 1),
+                                 ppaug = lag(paug, 1), ppsep = lag(psep, 1),
+                                 ppoct = lag(poct, 1), ppnov = lag(pnov, 1),
+                                 ppdec = lag(pdec, 1))
 precipdata$psummer <- precipdata$pjun + precipdata$pjul
 precipdata$pautumn <- precipdata$paug + precipdata$psep
 precipdata$ppsummer <- precipdata$ppjun + precipdata$ppjul
