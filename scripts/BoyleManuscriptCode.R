@@ -87,7 +87,6 @@ cal_table <- read.csv("data/CalTable.csv") # this is the conversion factor, in p
 # Climate data
 load("data/climQHI.Rdata")
 QikTempStart <- read.csv("data/QikTemp.csv")
-
 ERA <- read.csv("data/ERA_Qik.csv")
 
 # Load the pheno data
@@ -131,7 +130,6 @@ colnames(seaice)[1] <- "Year"
 seaice <- seaice %>% dplyr::select(-min.doy)
 
 
-# Data preparation --------------------------------------------------------
 
 cal_table <- cal_table %>% mutate(Conversion = Conversion*2)
 
@@ -291,9 +289,9 @@ ERAdata <- spread(ERA,month,value)
 names(ERAdata) <- c("Year", "pjan", "pfeb", "pmar", "papr", "pmay", "pjun", "pjul", "paug",
                        "psep", "poct", "pnov", "pdec")
 precipdata <- ERAdata %>% mutate(ppjun = lag(pjun, 1), ppjul = lag(pjul, 1),
-                                 ppaug = lag(paug, 1), ppsep = lag(psep, 1),
-                                 ppoct = lag(poct, 1), ppnov = lag(pnov, 1),
-                                 ppdec = lag(pdec, 1))
+                                    ppaug = lag(paug, 1), ppsep = lag(psep, 1),
+                                    ppoct = lag(poct, 1), ppnov = lag(pnov, 1),
+                                    ppdec = lag(pdec, 1))
 precipdata$psummer <- precipdata$pjun + precipdata$pjul
 precipdata$pautumn <- precipdata$paug + precipdata$psep
 precipdata$ppsummer <- precipdata$ppjun + precipdata$ppjul
@@ -428,7 +426,7 @@ models1scaled <- dendroclimAICscaledlong %>%
            
   tidy(fit) %>%
   filter(term == "Value")
-rownames(models1scaled) <- (c("Minimum sea ice extent", "MODIS NDVI", "Sea ice melt onset date", "Date snow free", 
+rownames(models1scaled) <- (c("Minimum sea ice extent", "MODIS maximum NDVI", "Sea ice melt onset date", "Date snow free", 
                               "Emergence", "Senescence", "Autumn precipitation", "Previous autumn precipitation",
                               "Previous summer precipitation", "Previous growing season",  "Spring precipitation", 
                               "Summer precipitation", "Previous autumn temperature", "Previous summer temperature",
@@ -436,14 +434,14 @@ rownames(models1scaled) <- (c("Minimum sea ice extent", "MODIS NDVI", "Sea ice m
                               "Autumn temperature", "Spring temperature", "Summer temperature",  "Winter temperature"))
 models1scaled <- models1scaled %>% dplyr::select(estimate, std.error, statistic, Variable)
 
-# AIC and Distributions of resids
+# AIC and Distributions of resids ----
 results <- data.frame("AIC"=NA, "pseudo.R2m"=NA, "pseudo.R2c"=NA, "LR p"=NA, "LR X"=NA)[numeric(0), ]
 AIC_var <- unique(dendroclimAICscaledlong$Variable)
 var_names <- c("Date snow free", "Emergence", "Senescence", "Growing season", "Previous growing season", "Previous summer temperature", 
                "Previous autumn temperature", "Winter temperature", "Spring temperature", "Summer temperature", 
                "Autumn temperature", "Previous summer precipitation", "Previous autumn precipitation", 
                "Winter precipitation", "Spring precipitation", "Summer precipitation", "Autumn precipitation",
-               "MODIS NDVI", "Sea ice minimum", "Onset melt doy")
+               "MODIS maximum NDVI", "Sea ice minimum", "Onset melt doy")
 for (i in 1:length(AIC_var)) {
   modeldata <- dendroclimAICscaledlong[dendroclimAICscaledlong$Variable == AIC_var[i],]
   AIC_nullREML <- lmer(darea ~ 1 + (1|Plot/Individual) + (1|Year), data = modeldata, REML = TRUE)
@@ -475,7 +473,7 @@ results[1,4] <- "-"
 results[1,5] <- "-"
 rownames(results) <- c("null", AIC_var)
 
-#autocorrelation figure
+#autocorrelation figure ----
 P1AIC_modelREML <- lmer(darea ~ P1 + (1|Plot/Individual) + (1|Year), data = dendroclimAICscaled, REML = TRUE)
 P1autocor <- acf(residuals(P1AIC_modelREML), plot = FALSE)
 P1acfdf <- with(P1autocor, data.frame(lag, acf))
@@ -599,7 +597,7 @@ onset.meltcorplot <- ggplot(data = onset.meltacfdf, mapping = aes(x = lag, y = a
 
 grid.arrange(P2corplot, P5corplot, Pxcorplot, pPxcorplot, ptsummercorplot, ptautumncorplot, twintercorplot, tspringcorplot, tsummercorplot, tautumncorplot, ppsummercorplot, ppautumncorplot, pwintercorplot, pspringcorplot, psummercorplot, pautumncorplot, NDVImodiscorplot, min.extentcorplot, onset.meltcorplot, P1corplot)
 
-#Panel figure
+#Panel figure ----
 P2model <- lmer(darea ~ P2 + (1|Plot/Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
   P2plot <- ggplot(P2model, aes(P2, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
     geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
@@ -628,7 +626,7 @@ plot(P5predict)
 plot(Pxpredict)
 plot(pPxpredict)
 
-# Plot overall figure
+# Plot overall figure ----
 groupings_order <- c("ice", "ndvi", "ice", "ice", rep("pheno", 2), rep("precip", 3), "pheno", 
                      rep("precip", 2), rep("temp", 2), "precip", "pheno",
                      rep("temp", 4))
@@ -654,7 +652,7 @@ ggplot(models1scaled, aes(colour = type, fill = type, x = Variable, y = estimate
   scale_colour_manual(values = c("#65c0ed","#F2AD00","#7200a3","#00A08A","#ce0000")) +
   scale_alpha(models1scaled$alpha, range = c(0.4, 0.7))
 
-#senescence tsummer correlation
+#senescence tsummer correlation ----
 ggplot(dendroclimAICscaled, aes(P5, tsummer)) + geom_point()
 cor.test(dendroclimAICscaled$P5, dendroclimAICscaled$tsummer)
 cor.test(dendroclimAICscaled$ptautumn, dendroclimAICscaled$tsummer)
