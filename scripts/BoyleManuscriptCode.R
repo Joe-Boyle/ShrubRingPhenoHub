@@ -2,7 +2,7 @@
 # Phenology/growth Manuscript code   ###
 # Joe Boyle                          ###
 # 04/11/2020                         ###
-# Adapted from Sandra Angers-Blondin ### 
+# Adapted from Sandra Angers-Blondin ###
 ########################################
 
 # Libraries ---------------------------------------------------------------
@@ -13,7 +13,7 @@ library(gridExtra)
 library(gridGraphics)
 library(lme4)
 library(nlme)
-library(effects) 
+library(effects)
 library(MuMIn)
 library(tidyr)
 library(dplR)
@@ -38,18 +38,18 @@ theme_JB <- function(){
   theme_classic()+
     theme(axis.text.x=element_text(size=14),
           axis.text.y=element_text(size=14),
-          axis.title.x=element_text(size=16),             
+          axis.title.x=element_text(size=16),
           axis.title.y=element_text(size=16),
           axis.line.x = element_line(color="black"),
           axis.line.y = element_line(color="black"),
-          panel.grid.major.x=element_blank(),                                          
+          panel.grid.major.x=element_blank(),
           panel.grid.minor.x=element_blank(),
           panel.grid.minor.y=element_blank(),
           panel.grid.major.y=element_blank(),
           plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), units = , "cm"),
           plot.title = element_text(size=16, vjust=1, hjust=0.5),
-          legend.text = element_text(size=10),          
-          legend.title = element_text(size=10),                              
+          legend.text = element_text(size=10),
+          legend.title = element_text(size=10),
           legend.position=c(0.9, 0.9))
 }
 
@@ -57,18 +57,18 @@ theme_JBangled <- function(){
   theme_classic()+
     theme(axis.text.x=element_text(size=12, angle = 45, hjust = 1),
           axis.text.y=element_text(size=14),
-          axis.title.x=element_text(size=16),             
+          axis.title.x=element_text(size=16),
           axis.title.y=element_text(size=16),
           axis.line.x = element_line(color="black"),
           axis.line.y = element_line(color="black"),
-          panel.grid.major.x=element_blank(),                                          
+          panel.grid.major.x=element_blank(),
           panel.grid.minor.x=element_blank(),
           panel.grid.minor.y=element_blank(),
           panel.grid.major.y=element_blank(),
           plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), units = , "cm"),
           plot.title = element_text(size=16, vjust=1, hjust=0.5),
-          legend.text = element_text(size=10),          
-          legend.title = element_text(size=10),                              
+          legend.text = element_text(size=10),
+          legend.title = element_text(size=10),
           legend.position=c(0.9, 0.9))
 }
 
@@ -152,14 +152,14 @@ dendro_av <- dendro_av %>%
 # Sample Depth Plot
 dendro_av$Plot <- as.factor(dendro_av$Plot)
 ggplot(dendro_av, aes(Year, fill = Plot)) +
-  geom_histogram(binwidth = 1) +  
+  geom_histogram(binwidth = 1) +
   scale_x_reverse() +
   theme_classic() +
   scale_fill_manual(values = wes_palette("Moonrise3")) +
   labs(y= "Number of individuals") +
   guides(fill=guide_legend(title="Transect"))
 
-# Create a wide rw df  
+# Create a wide rw df
 dendro_wide <- dendro_av %>% ungroup() %>%
   mutate(Individual = paste(Plot, "I", Individual, sep = "")) %>%
   dplyr::select(Individual, Year, rw) %>%
@@ -196,17 +196,17 @@ area_cs <- cbind(area_av, cs_long[3]) %>%
 dendro_av <- merge(dendro_av, area_cs) %>%
   mutate(Individual = paste(Plot, "I", Individual, sep = ""))
 
-# Create a wide area df  
+# Create a wide area df
 area_wide <- dendro_av %>% ungroup() %>%
   dplyr::select(Individual, Year, area) %>%
   spread(Individual, area)
 
-dendro_av$Year <- as.factor(dendro_av$Year) 
-dendro_av$Individual <- as.factor(dendro_av$Individual) 
-dendro_av$Plot <- as.factor(dendro_av$Plot) 
+dendro_av$Year <- as.factor(dendro_av$Year)
+dendro_av$Individual <- as.factor(dendro_av$Individual)
+dendro_av$Plot <- as.factor(dendro_av$Plot)
 
 # Filter out individuals with fewer than 6 years' total data
-dendro_av <- filter(dendro_av, !(Year == 2016 & count < 7 | Year == 2015 & count < 6 | 
+dendro_av <- filter(dendro_av, !(Year == 2016 & count < 7 | Year == 2015 & count < 6 |
                                    Year == 2014 & count < 5 | Year == 2013 & count < 4))
 
 # Detrending rw
@@ -311,7 +311,7 @@ dendroclim2 <- merge(seaice, dendroclim2, by="Year", all = TRUE) %>%
 
 # Select key variables
 dendroclim2 <- dplyr::select(dendroclim2, Year, Plot, Individual, drw, rw, area, darea, count,
-                             P1, P2, P5, Px, pPx, ptsummer, ptautumn, twinter, tspring, tsummer, tautumn, ppsummer, ppautumn, 
+                             P1, P2, P5, Px, pPx, ptsummer, ptautumn, twinter, tspring, tsummer, tautumn, ppsummer, ppautumn,
                              pwinter, pspring, psummer, pautumn, NDVI, min.extent, onset.melt)
 names(dendroclim2)[26] <- "NDVImodis"
 
@@ -322,7 +322,7 @@ dendroclim2 <- filter(dendroclim2, Year > 2000 & Year < 2016)
 dendroclimAIC <- filter(dendroclim2, Year > 2001 & Year < 2016)
 
 # Filter out individuals with fewer than 4 years' data
-dendroclimAIC <- filter(dendroclimAIC, !(Year == 2012 & count < 4 | Year == 2011 & count < 3 | 
+dendroclimAIC <- filter(dendroclimAIC, !(Year == 2012 & count < 4 | Year == 2011 & count < 3 |
                                            Year == 2010 & count < 2))
 
 # Scaled DF
@@ -352,14 +352,14 @@ dendroclimAIC <- dplyr::select(dendroclimAIC, -count)
 
 # Age Distribution across sites
 ggplot(AgeData, aes(RingCount, fill = Plot)) +
-  geom_histogram(binwidth = 5, center = 2) +  
+  geom_histogram(binwidth = 5, center = 2) +
   theme_classic() +
   scale_fill_manual(values = wes_palette("Moonrise3")) +
   labs(x = "Years of data", y = "Count") +
   guides(fill=guide_legend(title="Transect"))
 
 # Ring width distribution (raw, log transformed)
-dendroclimscaledlongnorm <- dendroclimAICscaled %>% 
+dendroclimscaledlongnorm <- dendroclimAICscaled %>%
   dplyr::select(-Plot ,-Individual, -rw, -area, -count) %>%
   gather(Variable, Value, c(1:20, 22:23)) %>%
   filter(Value != "NA") %>% unique(.)
@@ -369,7 +369,7 @@ var_norm <- unique(dendroclimscaledlongnorm$Variable)
 for (i in 1:length(var_norm)) {
   normdata <- dendroclimscaledlongnorm[dendroclimscaledlongnorm$Variable == var_norm[i],]
   r <- diff(range(normdata$Value))
-    normplot <- ggplot(normdata, aes(Value)) + 
+    normplot <- ggplot(normdata, aes(Value)) +
       geom_histogram(binwidth = r/8) + theme_classic() + labs(x = var_norm[i])
     print(normplot)
   qqnorm <- qplot(sample = Value, data = normdata) + geom_abline(intercept = 0, slope = 1)
@@ -383,20 +383,20 @@ qplot(sample = Value, data = normdata) + geom_abline(intercept = 0, slope = 1)
 
 # Crossdating
 plot_list <- unique(dendro_av$Plot)
-for (i in 1:length(plot_list)) {                                   
+for (i in 1:length(plot_list)) {
   plotdata <- dendro_av[dendro_av$Plot == plot_list[i],]
   plotplot <- ggplot(plotdata, aes(Year, drw, colour = factor(Individual))) +
-    geom_line(aes(group = Individual)) + theme_classic() 
+    geom_line(aes(group = Individual)) + theme_classic()
   print(plotplot)
   plotplot <- ggplot(plotdata, aes(count, drw, colour = factor(Individual))) +
-    geom_line() + theme_classic() 
+    geom_line() + theme_classic()
   print(plotplot)
-  
+
   plotplot <- ggplot(plotdata, aes(Year, darea, colour = factor(Individual))) +
-    geom_line(aes(group = Individual)) + theme_classic() 
+    geom_line(aes(group = Individual)) + theme_classic()
   print(plotplot)
   plotplot <- ggplot(plotdata, aes(count, darea, colour = factor(Individual))) +
-    geom_line() + theme_classic() 
+    geom_line() + theme_classic()
   print(plotplot)
 }
 
@@ -423,12 +423,12 @@ anova(aov(darea~Year, dendroclimAIC))
 models1scaled <- dendroclimAICscaledlong %>%
   group_by(Variable) %>%
   do(fit = lmer(darea ~ (Value) + (1|Plot/Individual) + (1|Year), data = ., REML = TRUE)) %>%
-           
+
   tidy(fit) %>%
   filter(term == "Value")
-rownames(models1scaled) <- (c("Minimum sea ice extent", "MODIS maximum NDVI", "Sea ice melt onset date", "Date snow free", 
+rownames(models1scaled) <- (c("Minimum sea ice extent", "MODIS maximum NDVI", "Sea ice melt onset date", "Date snow free",
                               "Emergence", "Senescence", "Autumn precipitation", "Previous autumn precipitation",
-                              "Previous summer precipitation", "Previous growing season",  "Spring precipitation", 
+                              "Previous summer precipitation", "Previous growing season",  "Spring precipitation",
                               "Summer precipitation", "Previous autumn temperature", "Previous summer temperature",
                               "Winter precipitation", "Growing season",
                               "Autumn temperature", "Spring temperature", "Summer temperature",  "Winter temperature"))
@@ -437,9 +437,9 @@ models1scaled <- models1scaled %>% dplyr::select(estimate, std.error, statistic,
 # AIC and Distributions of resids ----
 results <- data.frame("AIC"=NA, "pseudo.R2m"=NA, "pseudo.R2c"=NA, "LR p"=NA, "LR X"=NA)[numeric(0), ]
 AIC_var <- unique(dendroclimAICscaledlong$Variable)
-var_names <- c("Date snow free", "Emergence", "Senescence", "Growing season", "Previous growing season", "Previous summer temperature", 
-               "Previous autumn temperature", "Winter temperature", "Spring temperature", "Summer temperature", 
-               "Autumn temperature", "Previous summer precipitation", "Previous autumn precipitation", 
+var_names <- c("Date snow free", "Emergence", "Senescence", "Growing season", "Previous growing season", "Previous summer temperature",
+               "Previous autumn temperature", "Winter temperature", "Spring temperature", "Summer temperature",
+               "Autumn temperature", "Previous summer precipitation", "Previous autumn precipitation",
                "Winter precipitation", "Spring precipitation", "Summer precipitation", "Autumn precipitation",
                "MODIS maximum NDVI", "Sea ice minimum", "Onset melt doy")
 for (i in 1:length(AIC_var)) {
@@ -455,7 +455,7 @@ for (i in 1:length(AIC_var)) {
   results[i+1,5] <- anova(AIC_model, AIC_null) [2,6]
   modelplot <- ggplot(AIC_model, aes(Value, darea)) + geom_point() +  geom_smooth(method=lm) +
     theme_JB() + labs(x = var_names[i])
-  diagplot <- ggplot(AIC_model, aes(.fitted, .resid))  + geom_point() + 
+  diagplot <- ggplot(AIC_model, aes(.fitted, .resid))  + geom_point() +
     geom_hline(yintercept = 0, alpha = 0.5, linetype = 3) +
     theme_JB()
   autocor <- acf(residuals(AIC_modelREML), plot = FALSE)
@@ -599,25 +599,25 @@ grid.arrange(P2corplot, P5corplot, Pxcorplot, pPxcorplot, ptsummercorplot, ptaut
 
 #Panel figure ----
 P2model <- lmer(darea ~ P2 + (1|Plot/Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
-  P2plot <- ggplot(P2model, aes(P2, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
-    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
+  P2plot <- ggplot(P2model, aes(P2, darea)) + geom_point(colour="#7200a3", alpha=0.5) +
+    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() +
     labs(x = "Emergence (doy)", y = "Relative growth")
 P5model <- lmer(darea ~ P5 + (1|Plot/Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
-  P5plot <- ggplot(P5model, aes(P5, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
-    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
+  P5plot <- ggplot(P5model, aes(P5, darea)) + geom_point(colour="#7200a3", alpha=0.5) +
+    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() +
     labs(x = "Senescence (doy)", y = "Relative growth")
 Pxmodel <- lmer(darea ~ Px + (1|Plot/Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
-  Pxplot <- ggplot(Pxmodel, aes(Px, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
-    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
+  Pxplot <- ggplot(Pxmodel, aes(Px, darea)) + geom_point(colour="#7200a3", alpha=0.5) +
+    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() +
     labs(x = "GSL (days)", y = "Relative growth")
 pPxmodel <- lmer(darea ~ pPx + (1|Plot/Individual) + (1|Year), data = dendroclimAIC, REML = FALSE)
-  pPxplot <- ggplot(pPxmodel, aes(pPx, darea)) + geom_point(colour="#7200a3", alpha=0.5) +  
-    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() + 
+  pPxplot <- ggplot(pPxmodel, aes(pPx, darea)) + geom_point(colour="#7200a3", alpha=0.5) +
+    geom_smooth(colour="#7200a3", fill="#7200a3", method=lm) + theme_JB() +
     labs(x = "Previous GSL (days)", y = "Relative growth")
 grid.arrange(P2plot, P5plot, Pxplot, pPxplot)
-  
+
 ##Trying with ggpredict, but the values look the same?
-P2predict <- ggpredict(P2model, terms = "P2")
+P2predict <- ggpredict(P2model, terms = "P2", type = "re")  # SAB: this SHOULD create the wider CI, but fails..?!
 P5predict <- ggpredict(P5model, terms = "P5")
 Pxpredict <- ggpredict(Pxmodel, terms = "Px")
 pPxpredict <- ggpredict(pPxmodel, terms = "pPx")
@@ -626,26 +626,29 @@ plot(P5predict)
 plot(Pxpredict)
 plot(pPxpredict)
 
+
+
+
 # Plot overall figure ----
-groupings_order <- c("ice", "ndvi", "ice", "ice", rep("pheno", 2), rep("precip", 3), "pheno", 
+groupings_order <- c("ice", "ndvi", "ice", "ice", rep("pheno", 2), rep("precip", 3), "pheno",
                      rep("precip", 2), rep("temp", 2), "precip", "pheno",
                      rep("temp", 4))
 
 models1scaled$alpha <- c(rep(0.3, 5), 0.6, rep(0.3, 6), 0.6, rep(0.3, 5), 0.6, 0.3)
 models1scaled$type <- as.factor(groupings_order)
 models1scaled$Variable <- as.factor(models1scaled$Variable)
-ggplot(models1scaled, aes(colour = type, fill = type, x = Variable, y = estimate, alpha = alpha)) + 
+ggplot(models1scaled, aes(colour = type, fill = type, x = Variable, y = estimate, alpha = alpha)) +
   geom_hline(yintercept=0, alpha=0.5, linetype = 3) +
   geom_crossbar(aes(ymin = estimate - std.error, ymax = estimate + std.error,)) +
   theme_JBangled() + ylab("Standardised Effect Size") +
   theme(legend.position = "none", axis.title.x = element_blank()) +
   scale_x_discrete(limits=c("P2","P5","Px","pPx","ptsummer","ptautumn","twinter","tspring","tsummer",
                             "tautumn","ppsummer","ppautumn","pwinter","pspring","psummer","pautumn",
-                            "NDVImodis","min.extent","onset.melt","P1"), 
-                   labels =  c("Emergence", "Senescence", "GSL", "Previous GSL", expression(paste("Previous T"[summer])), 
-                               expression(paste("Previous T"[autumn])), expression(paste("T"[winter])), expression(paste("T"[spring])), 
-                               expression(paste("T"[summer])), expression(paste("T"[autumn])), expression(paste("Previous P"[summer])), 
-                               expression(paste("Previous P"[autumn])), expression(paste("P"[winter])), expression(paste("P"[spring])), 
+                            "NDVImodis","min.extent","onset.melt","P1"),
+                   labels =  c("Emergence", "Senescence", "GSL", "Previous GSL", expression(paste("Previous T"[summer])),
+                               expression(paste("Previous T"[autumn])), expression(paste("T"[winter])), expression(paste("T"[spring])),
+                               expression(paste("T"[summer])), expression(paste("T"[autumn])), expression(paste("Previous P"[summer])),
+                               expression(paste("Previous P"[autumn])), expression(paste("P"[winter])), expression(paste("P"[spring])),
                                expression(paste("P"[summer])), expression(paste("P"[autumn])),
                               "MODIS NDVI", "Minimum sea ice extent", "Sea ice melt onset date", "Date snow free")) +
   scale_fill_manual(values = c("#65c0ed","#F2AD00","#7200a3","#00A08A","#ce0000")) +
