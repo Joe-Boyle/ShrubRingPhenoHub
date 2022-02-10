@@ -74,8 +74,6 @@ theme_JBangled <- function(){
 
 # Import data -------------------------------------------------------------
 
-setwd("Macintosh HD/Users/joeboyle/Documents/GitHub/ShrubRingPhenoHub")
-
 # Ring width data
 dendro <- read.csv("data/RingWidthData.csv")
 
