@@ -1094,9 +1094,9 @@ pPxplot <- ggplot() +
   theme_JB() +
   labs(x = "\nPrevious GSL (days)", y = "Relative growth\n")
 
-grid.arrange(P2plot, P5plot, Pxplot, pPxplot)
-ggsave(
-  "figures/PhenologyGrowthModels.pdf",
+PhenologyGrowthModels <- grid.arrange(P2plot, P5plot, Pxplot, pPxplot)
+ggsave(plot = PhenologyGrowthModels,
+  filename = "figures/PhenologyGrowthModels.pdf",
   width = 20,
   height = 20,
   units = "cm"
