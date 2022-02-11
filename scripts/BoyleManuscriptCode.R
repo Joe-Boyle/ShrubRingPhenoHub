@@ -174,6 +174,9 @@ ggplot(dendro_av, aes(Year, fill = Plot)) +
   geom_histogram(binwidth = 1) +
   scale_x_reverse() +
   theme_classic() +
+  geom_vline(xintercept = 2000.5,
+             alpha = 0.5,
+             linetype = 3) +
   scale_fill_manual(values = wes_palette("Moonrise3")) +
   labs(y = "Number of individuals") +
   guides(fill = guide_legend(title = "Transect"))
