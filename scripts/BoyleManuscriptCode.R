@@ -491,6 +491,12 @@ ggplot(AgeData, aes(RingCount, fill = Plot)) +
   scale_fill_manual(values = wes_palette("Moonrise3")) +
   labs(x = "Years of data", y = "Count") +
   guides(fill = guide_legend(title = "Transect"))
+ggsave(
+  "figures/TransectAges.pdf",
+  width = 20,
+  height = 20,
+  units = "cm"
+)
 
 # Ring width distribution (raw, log transformed)
 DendroClimSclongnorm <- DendroClimAICSc %>%
@@ -1123,7 +1129,7 @@ groupings_order <-
   )
 
 models1Sc$alpha <-
-  c(rep(0.3, 5), 0.6, rep(0.3, 6), 0.6, rep(0.3, 5), 0.6, 0.3)
+  c(rep(0.3, 16), 0.6, rep(0.3, 3))
 models1Sc$type <- as.factor(groupings_order)
 models1Sc$Variable <- as.factor(models1Sc$Variable)
 models1Sc$estimate <- as.numeric(models1Sc$estimate)
