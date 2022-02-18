@@ -171,11 +171,14 @@ ggplot(dendro_av, aes(Year, fill = Plot)) +
   geom_histogram(binwidth = 1) +
   scale_x_reverse() +
   theme_classic() +
+  geom_vline(xintercept = 2001.5,
+             alpha = 0.5,
+             linetype = 3) +
   scale_fill_manual(values = wes_palette("Moonrise3")) +
   labs(y = "Number of individuals") +
   guides(fill = guide_legend(title = "Transect"))
 ggsave(
-  "figures/FigS2_SampleDepth.pdf",
+  "figures/SampleDepthAll.pdf",
   width = 20,
   height = 20,
   units = "cm"
@@ -244,6 +247,30 @@ dendro_av <-
     )
   )
 
+# Filter out first two years' data for each individual
+dendro_av <- filter(dendro_av, count > 2)
+
+# Sample Depth Plot
+sampledepth <- data.frame(dendro_av$Year, dendro_av$count, dendro_av$Plot)
+sampledepth$dendro_av.Year <- as.numeric(as.character(sampledepth$dendro_av.Year))
+sampledepth <- filter(sampledepth, dendro_av.Year > 2001, dendro_av.Year < 2016)
+  ggplot(sampledepth, aes(dendro_av.Year, fill = dendro_av.Plot)) +
+  geom_histogram(binwidth = 1) +
+  scale_x_reverse() +
+  theme_classic() +
+  geom_vline(xintercept = 2001.5,
+             alpha = 0.5,
+             linetype = 3) +
+  scale_fill_manual(values = wes_palette("Moonrise3")) +
+  labs(x = "Year", y = "Number of individuals") +
+  guides(fill = guide_legend(title = "Transect"))
+ggsave(
+  "figures/SampleDepthUsed.pdf",
+  width = 20,
+  height = 20,
+  units = "cm"
+)
+
 # Detrending rw
 # recreate wide df
 dendro_wide <- dendro_av %>% ungroup() %>%
@@ -285,9 +312,6 @@ detrendedarealong <-
   na.omit()
 names(detrendedarealong)[1] <- "Year"
 dendro_av <- merge(detrendedarealong, dendro_av)
-
-# Filter out first two years' data for each individual
-dendro_av <- filter(dendro_av, count > 2)
 
 # Prepare the pheno data
 pheno <- qiki_phen %>% filter(SPP == "SALARC") %>%
