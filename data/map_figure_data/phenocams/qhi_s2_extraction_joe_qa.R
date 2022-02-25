@@ -13,7 +13,7 @@ library(ggrepel)
 
 # Load phenocam extactions (from GEE script /user/imyersmith/ShrubHub/Phenology/QHI_S2_phenocams_JA)
   # A direct snapshot to the script can be found here: https://code.earthengine.google.com/2f006e66b09b02a2374a133288bd3480
-pheno_data <- read_csv("S2QHIphenocam.csv")
+pheno_data <- read_csv("data/map_figure_data/phenocams/S2QHIphenocam.csv")
 
 # Prepare and plot data
 plot_list <- pheno_data %>% 
@@ -48,7 +48,7 @@ bb_for_plot <- st_bbox(st_buffer(phenocams, 5000))
 #   st_transform(unique(pheno_data$EPSG))
 
 # Load detailed Yukon Coastline
-yukon_coast <- read_sf("geometries/yukon_bounds_utmz7.shp") %>%
+yukon_coast <- read_sf("data/map_figure_data/phenocams/geometries/yukon_bounds_utmz7.shp") %>%
   st_crop(phenocams %>% st_convex_hull() %>% st_buffer(500000))
 
 # Make map
@@ -80,6 +80,4 @@ plot_grid(plotlist = plot_list,
             labels = c("a",""),
             nrow = 2,
             rel_heights = c(1,3)) %>%
-  save_plot("S2QHI_QA_plot.png", ., ncol = 2, nrow = 4)
-
-
+  save_plot("data/map_figure_data/phenocams/S2QHI_QA_plot.png", ., ncol = 2, nrow = 4)

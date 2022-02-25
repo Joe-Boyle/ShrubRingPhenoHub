@@ -3,7 +3,7 @@
 
 library(tidyverse)
 library(sf)
-setwd("/Users/au634851/Google Drive/Postdoc Aarhus/External/JoeQHI/phenocoords")
+
 phenocoords <- data.frame(matrix(c(
 "Phenocam1",	69.57560,	-138.90460,	110,
 "Phenocam2",	69.57570,	-138.90525,	87,
@@ -16,5 +16,5 @@ phenocoords <- data.frame(matrix(c(
   setNames(c("Name", "Lat", "Long", "GPS height")) %>%
   st_as_sf(coords = c("Long", "Lat"), crs = 4326) %>%
   st_transform(crs = 32607)
-write_sf(phenocoords, "phenocoords.shp")
+write_sf(phenocoords, "data/map_figure_data/phenocoords/phenocoords.shp")
 plot(phenocoords)

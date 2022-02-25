@@ -9,9 +9,6 @@ library(cowplot)
 library(rnaturalearth)
 library(rnaturalearthdata)
 
-# Set working directory
-setwd("/Users/au634851/Google Drive/Postdoc Aarhus/External/JoeQHI/Map_Figure")
-
 # Define lambert conformic conic crs 
 lambert_conformic <- 'PROJCS["North_America_Lambert_Conformal_Conic",
                             GEOGCS["GCS_North_American_1983",
@@ -59,5 +56,5 @@ canada_map <- ggplot() + geom_sf(data = world, fill = "#ffffffFF", size = 0.5) +
   ) 
 # theme(panel.background = element_rect(fill = "lightskyblue"))
 canada_map
-save_plot(canada_map, filename = "canada_map.png",
+save_plot(canada_map, filename = "figures/map_figure/canada_map.png",
           base_aspect_ratio = 1, base_height = 5)  

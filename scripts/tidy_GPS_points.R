@@ -23,13 +23,8 @@ gps_raw <- read.csv("data/JB_GPS_salix.csv", sep = ";")
 gps_pt = st_as_sf(gps, coords = c("lon", "lat"),
                  crs = 4326)
 
-
-
 ## Also create a quadrat polygon from bounding box
-
 quadrat <- st_as_sfc(st_bbox(gps_pt))
-
-
 
 # Check that everything looks right
 
