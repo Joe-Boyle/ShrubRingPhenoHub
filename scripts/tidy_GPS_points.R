@@ -14,7 +14,7 @@ library(ggplot2)
 
 # Read data ---------------------------------------------------------------
 
-gps_raw <- read.csv("data/JB_GPS_salix.csv", sep = ";")
+gps_raw <- read.csv("data/map_figure_data/JB_GPS_salix.csv", sep = ";")
 
 
 # Convert to simple features ----------------------------------------------
