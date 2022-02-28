@@ -178,7 +178,7 @@ ggplot(dendro_av, aes(Year, fill = Plot)) +
   labs(y = "Number of individuals") +
   guides(fill = guide_legend(title = "Transect"))
 ggsave(
-  "figures/SampleDepthAll.pdf",
+  "figures/FigS2_SampleDepthAll.pdf",
   width = 20,
   height = 20,
   units = "cm"
@@ -265,7 +265,7 @@ sampledepth <- filter(sampledepth, dendro_av.Year > 2001, dendro_av.Year < 2016)
   labs(x = "Year", y = "Number of individuals") +
   guides(fill = guide_legend(title = "Transect"))
 ggsave(
-  "figures/SampleDepthUsed.pdf",
+  "figures/FigS3_SampleDepthUsed.pdf",
   width = 20,
   height = 20,
   units = "cm"
