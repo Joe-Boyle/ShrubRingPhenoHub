@@ -167,18 +167,15 @@ dendro_av <- dendro_av %>%
 
 # Sample Depth Plot
 dendro_av$Plot <- as.factor(dendro_av$Plot)
-ggplot(dendro_av, aes(Year, fill = Plot)) +
-  geom_histogram(binwidth = 1) +
-  scale_x_reverse() +
+SDall <- ggplot(AgeData, aes(RingCount, fill = Plot)) +
+  geom_histogram(binwidth = 5, center = 2) +  
   theme_classic() +
-  geom_vline(xintercept = 2001.5,
-             alpha = 0.5,
-             linetype = 3) +
   scale_fill_manual(values = wes_palette("Moonrise3")) +
-  labs(y = "Number of individuals") +
-  guides(fill = guide_legend(title = "Transect"))
+  labs(x = "Years of data", y = "Count") +
+  guides(fill=guide_legend(title="Transect"))
+SDall
 ggsave(
-  "figures/FigS2_SampleDepthAll.pdf",
+  "figures/SampleDepthAll.pdf",
   width = 20,
   height = 20,
   units = "cm"
@@ -254,7 +251,7 @@ dendro_av <- filter(dendro_av, count > 2)
 sampledepth <- data.frame(dendro_av$Year, dendro_av$count, dendro_av$Plot)
 sampledepth$dendro_av.Year <- as.numeric(as.character(sampledepth$dendro_av.Year))
 sampledepth <- filter(sampledepth, dendro_av.Year > 2001, dendro_av.Year < 2016)
-  ggplot(sampledepth, aes(dendro_av.Year, fill = dendro_av.Plot)) +
+SDused <- ggplot(sampledepth, aes(dendro_av.Year, fill = dendro_av.Plot)) +
   geom_histogram(binwidth = 1) +
   scale_x_reverse() +
   theme_classic() +
@@ -264,12 +261,15 @@ sampledepth <- filter(sampledepth, dendro_av.Year > 2001, dendro_av.Year < 2016)
   scale_fill_manual(values = wes_palette("Moonrise3")) +
   labs(x = "Year", y = "Number of individuals") +
   guides(fill = guide_legend(title = "Transect"))
+SDused
 ggsave(
-  "figures/FigS3_SampleDepthUsed.pdf",
+  "figures/SampleDepthUsed.pdf",
   width = 20,
   height = 20,
   units = "cm"
 )
+
+grid.arrange(SDall,SDused)
 
 # Detrending rw
 # recreate wide df
@@ -655,7 +655,7 @@ for (i in 1:length(AIC_var)) {
     geom_hline(aes(yintercept = 0)) +
     geom_hline(aes(yintercept = 0.145)) +
     geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
-  grid.arrange(main = textGrob(var_names[i], gp = gpar(fontsize = 20)), modelplot, diagplot, corplot)
+  grid.arrange(main = textGrob(var_names[i], gp = gpar(fontsize = 12)), modelplot, diagplot, corplot)
 }
 results[1, 1] <- summary(AIC_null)$AIC[1]
 results[1, 2] <- r.squaredGLMM(AIC_nullREML)[1]
@@ -930,7 +930,7 @@ overallautocor <-
     P1corplot
   )
 ggsave(
-  "figures/darea_FigS5_Autocorrelation.pdf",
+  "figures/FigS5_Autocorrelation_darea.pdf",
   plot = overallautocor,
   width = 40,
   height = 40,
@@ -1088,7 +1088,7 @@ tautumnplot <- ggplot() +
 
 PhenologyGrowthModels <- grid.arrange(P2plot, P5plot, pPxplot, Pxplot, tsummerplot, tautumnplot)
 ggsave(plot = PhenologyGrowthModels,
-  filename = "figures/darea_Fig2_GrowthModels.pdf",
+  filename = "figures/Fig2_GrowthModels_darea.pdf",
   width = 20,
   height = 30,
   units = "cm"
@@ -1164,7 +1164,7 @@ ggplot(models1Sc_Bayes,
   scale_colour_manual(values = c("#65c0ed", "#F2AD00", "#7200a3", "#00A08A", "#ce0000"))
 
 ggsave(
-  "figures/darea_Fig3_AllVariables.pdf",
+  "figures/Fig3_AllVariables_darea.pdf",
   width = 20,
   height = 20,
   units = "cm"
