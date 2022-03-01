@@ -269,7 +269,23 @@ ggsave(
   units = "cm"
 )
 
-grid.arrange(SDall,SDused)
+legend <- function(my_ggp) {
+  part1 <- ggplot_gtable(ggplot_build(my_ggp))
+  part2 <- which(sapply(part1$grobs, function(x) x$name) == "guide-box")
+  part3 <- part1$grobs[[part2]]
+  return(part3)
+}
+SDall_nolegend <- SDall + theme(legend.position = "none")
+SDused_nolegend <- SDused + theme(legend.position = "none")
+SDlegend <- legend(SDall)
+grid.arrange(arrangeGrob(SDall_nolegend, SDused_nolegend, ncol = 1),
+             SDlegend, nrow = 1)
+ggsave(
+  "figures/FigS2_SampleDepth.pdf",
+  width = 20,
+  height = 20,
+  units = "cm"
+)
 
 # Detrending rw
 # recreate wide df
