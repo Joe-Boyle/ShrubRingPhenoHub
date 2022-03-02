@@ -507,12 +507,12 @@ DendroClimAICScLong <-
 # Plot all individual curves
 ggplot(DendroClimAIC, aes(x = count, y = area, group = Individual)) +
   geom_smooth(stat = "identity") +
-  labs(x = "Year", y = "Ring width") +
+  labs(x = "Year", y = "Basal area increment") +
   theme_JB()
 
 ggplot(DendroClimAIC, aes(x = count, y = darea, group = Individual)) +
   geom_smooth(stat = "identity") +
-  labs(x = "Year", y = "Ring area") +
+  labs(x = "Year", y = "Detrended basal area increment") +
   theme_JB()
 
 DendroClimAIC <- dplyr::select(DendroClimAIC,-count)
@@ -575,7 +575,7 @@ for (i in 1:length(plot_list)) {
 }
 
 # Mixed-model analyses ----
-anova(aov(darea ~ Plot, DendroClimAIC))
+anova(aov(drw ~ Plot, DendroClimAIC))
 plots <- c(1:5)
 randoms <-
   data.frame("p-value" = NA,
@@ -586,24 +586,24 @@ for (i in 1:length(plots)) {
   individualsplot <-
     ggplot(individualdata, aes(Individual, area, group = Individual)) + geom_boxplot() + theme_classic()
   individualsplot <-
-    boxplot(darea ~ Individual, individualdata, range = 5)
+    boxplot(drw ~ Individual, individualdata, range = 5)
   print(individualsplot)
-  randoms[i, 1] <- anova(aov(darea ~ Individual, individualdata))[1, 5]
-  randoms[i, 2] <- anova(aov(darea ~ Individual, individualdata))[2, 1]
-  randoms[i, 3] <- anova(aov(darea ~ Individual, individualdata))[1, 4]
+  randoms[i, 1] <- anova(aov(drw ~ Individual, individualdata))[1, 5]
+  randoms[i, 2] <- anova(aov(drw ~ Individual, individualdata))[2, 1]
+  randoms[i, 3] <- anova(aov(drw ~ Individual, individualdata))[1, 4]
 }
 ggplot(DendroClimAIC, aes(Year, area, group = Year)) + geom_boxplot() + theme_classic()
-boxplot(darea ~ Year, DendroClimAIC, range = 5)
-anova(aov(darea ~ Year, DendroClimAIC))
+boxplot(drw ~ Year, DendroClimAIC, range = 5)
+anova(aov(drw ~ Year, DendroClimAIC))
 
 # Overall linear models
 models1Sc <- DendroClimAICScLong %>%
   group_by(Variable) %>%
   do(estimate = unlist(coef(summary(
-    lmer(darea ~ (Value) + (1 |
+    lmer(drw ~ (Value) + (1 |
                             Year), data = ., REML = TRUE)
   ))[2][[1]]), std.error = unlist(coef(summary(
-    lmer(darea ~ (Value) + (1 | Year), data = ., REML = TRUE)
+    lmer(drw ~ (Value) + (1 | Year), data = ., REML = TRUE)
   ))[4][[1]]))
 
 # AIC and Distributions of resids ----
@@ -643,13 +643,13 @@ for (i in 1:length(AIC_var)) {
   modeldata <-
     DendroClimAICScLong[DendroClimAICScLong$Variable == AIC_var[i], ]
   AIC_nullREML <-
-    lmer(darea ~ 1 + (1 | Year), data = modeldata, REML = TRUE)
+    lmer(drw ~ 1 + (1 | Year), data = modeldata, REML = TRUE)
   AIC_null <-
-    lmer(darea ~ 1 + (1 | Year), data = modeldata, REML = FALSE)
+    lmer(drw ~ 1 + (1 | Year), data = modeldata, REML = FALSE)
   AIC_modelREML <-
-    lmer(darea ~ Value + (1 | Year), data = modeldata, REML = TRUE)
+    lmer(drw ~ Value + (1 | Year), data = modeldata, REML = TRUE)
   AIC_model <-
-    lmer(darea ~ Value + (1 | Year), data = modeldata, REML = FALSE)
+    lmer(drw ~ Value + (1 | Year), data = modeldata, REML = FALSE)
   results[i + 1, 1] <- summary(AIC_model)$AIC[1]
   results[i + 1, 2] <- r.squaredGLMM(AIC_modelREML)[1]
   results[i + 1, 3] <- r.squaredGLMM(AIC_modelREML)[2]
@@ -680,11 +680,11 @@ results[1, 4] <- "-"
 results[1, 5] <- "-"
 rownames(results) <- c("null", AIC_var)
 
-write.csv(results, file = "outputs/darea_AIC_results_table.csv")
+write.csv(results, file = "outputs/AIC_results_table_drw.csv")
 
 # Figure S5 Autocorrelation ----
 P1AIC_modelREML <-
-  lmer(darea ~ P1 + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ P1 + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 P1autocor <- acf(residuals(P1AIC_modelREML), plot = FALSE)
 P1acfdf <- with(P1autocor, data.frame(lag, acf))
 P1corplot <-
@@ -694,7 +694,7 @@ P1corplot <-
                                                linetype = 2) +
   labs(title = "Snow melt date", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 P2AIC_modelREML <-
-  lmer(darea ~ P2 + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ P2 + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 P2autocor <- acf(residuals(P2AIC_modelREML), plot = FALSE)
 P2acfdf <- with(P2autocor, data.frame(lag, acf))
 P2corplot <-
@@ -704,7 +704,7 @@ P2corplot <-
                                                linetype = 2) +
   labs(title = "Leaf emergence", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 P5AIC_modelREML <-
-  lmer(darea ~ P5 + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ P5 + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 P5autocor <- acf(residuals(P5AIC_modelREML), plot = FALSE)
 P5acfdf <- with(P5autocor, data.frame(lag, acf))
 P5corplot <-
@@ -714,7 +714,7 @@ P5corplot <-
                                                linetype = 2) +
   labs(title = "Leaf senescence", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 PxAIC_modelREML <-
-  lmer(darea ~ Px + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ Px + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 Pxautocor <- acf(residuals(PxAIC_modelREML), plot = FALSE)
 Pxacfdf <- with(Pxautocor, data.frame(lag, acf))
 Pxcorplot <-
@@ -724,7 +724,7 @@ Pxcorplot <-
                                                linetype = 2) +
   labs(title = "GSL", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 pPxAIC_modelREML <-
-  lmer(darea ~ pPx + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ pPx + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 pPxautocor <- acf(residuals(pPxAIC_modelREML), plot = FALSE)
 pPxacfdf <- with(pPxautocor, data.frame(lag, acf))
 pPxcorplot <-
@@ -734,7 +734,7 @@ pPxcorplot <-
                                                linetype = 2) +
   labs(title = "Previous GSL", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ptsummerAIC_modelREML <-
-  lmer(darea ~ ptsummer + (1 |
+  lmer(drw ~ ptsummer + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
 ptsummerautocor <-
   acf(residuals(ptsummerAIC_modelREML), plot = FALSE)
@@ -748,7 +748,7 @@ ptsummercorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ptautumnAIC_modelREML <-
-  lmer(darea ~ ptautumn + (1 |
+  lmer(drw ~ ptautumn + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
 ptautumnautocor <-
   acf(residuals(ptautumnAIC_modelREML), plot = FALSE)
@@ -762,7 +762,7 @@ ptautumncorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 twinterAIC_modelREML <-
-  lmer(darea ~ twinter + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ twinter + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 twinterautocor <- acf(residuals(twinterAIC_modelREML), plot = FALSE)
 twinteracfdf <- with(twinterautocor, data.frame(lag, acf))
 twintercorplot <-
@@ -774,7 +774,7 @@ twintercorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 tspringAIC_modelREML <-
-  lmer(darea ~ tspring + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ tspring + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 tspringautocor <- acf(residuals(tspringAIC_modelREML), plot = FALSE)
 tspringacfdf <- with(tspringautocor, data.frame(lag, acf))
 tspringcorplot <-
@@ -786,7 +786,7 @@ tspringcorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 tsummerAIC_modelREML <-
-  lmer(darea ~ tsummer + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ tsummer + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 tsummerautocor <- acf(residuals(tsummerAIC_modelREML), plot = FALSE)
 tsummeracfdf <- with(tsummerautocor, data.frame(lag, acf))
 tsummercorplot <-
@@ -798,7 +798,7 @@ tsummercorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 tautumnAIC_modelREML <-
-  lmer(darea ~ tautumn + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ tautumn + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 tautumnautocor <- acf(residuals(tautumnAIC_modelREML), plot = FALSE)
 tautumnacfdf <- with(tautumnautocor, data.frame(lag, acf))
 tautumncorplot <-
@@ -810,7 +810,7 @@ tautumncorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ppsummerAIC_modelREML <-
-  lmer(darea ~ ppsummer + (1 |
+  lmer(drw ~ ppsummer + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
 ppsummerautocor <-
   acf(residuals(ppsummerAIC_modelREML), plot = FALSE)
@@ -824,7 +824,7 @@ ppsummercorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ppautumnAIC_modelREML <-
-  lmer(darea ~ ppautumn + (1 |
+  lmer(drw ~ ppautumn + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
 ppautumnautocor <-
   acf(residuals(ppautumnAIC_modelREML), plot = FALSE)
@@ -838,7 +838,7 @@ ppautumncorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 pwinterAIC_modelREML <-
-  lmer(darea ~ pwinter + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ pwinter + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 pwinterautocor <- acf(residuals(pwinterAIC_modelREML), plot = FALSE)
 pwinteracfdf <- with(pwinterautocor, data.frame(lag, acf))
 pwintercorplot <-
@@ -850,7 +850,7 @@ pwintercorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 pspringAIC_modelREML <-
-  lmer(darea ~ pspring + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ pspring + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 pspringautocor <- acf(residuals(pspringAIC_modelREML), plot = FALSE)
 pspringacfdf <- with(pspringautocor, data.frame(lag, acf))
 pspringcorplot <-
@@ -862,7 +862,7 @@ pspringcorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 psummerAIC_modelREML <-
-  lmer(darea ~ psummer + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ psummer + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 psummerautocor <- acf(residuals(psummerAIC_modelREML), plot = FALSE)
 psummeracfdf <- with(psummerautocor, data.frame(lag, acf))
 psummercorplot <-
@@ -874,7 +874,7 @@ psummercorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 pautumnAIC_modelREML <-
-  lmer(darea ~ pautumn + (1 | Year), data = DendroClimAICSc, REML = TRUE)
+  lmer(drw ~ pautumn + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 pautumnautocor <- acf(residuals(pautumnAIC_modelREML), plot = FALSE)
 pautumnacfdf <- with(pautumnautocor, data.frame(lag, acf))
 pautumncorplot <-
@@ -886,7 +886,7 @@ pautumncorplot <-
        x = "",
        y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 NDVImodisAIC_modelREML <-
-  lmer(darea ~ NDVImodis + (1 |
+  lmer(drw ~ NDVImodis + (1 |
                             Year), data = DendroClimAICSc, REML = TRUE)
 NDVImodisautocor <-
   acf(residuals(NDVImodisAIC_modelREML), plot = FALSE)
@@ -898,7 +898,7 @@ NDVImodiscorplot <-
                                                linetype = 2) +
   labs(title = "MODIS max. NDVI", x = "lag", y = "acf") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 min.extentAIC_modelREML <-
-  lmer(darea ~ min.extent + (1 |
+  lmer(drw ~ min.extent + (1 |
                              Year), data = DendroClimAICSc, REML = TRUE)
 min.extentautocor <-
   acf(residuals(min.extentAIC_modelREML), plot = FALSE)
@@ -910,7 +910,7 @@ min.extentcorplot <-
                                                linetype = 2) +
   labs(title = "Minimum sea ice extent", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 onset.meltAIC_modelREML <-
-  lmer(darea ~ onset.melt + (1 |
+  lmer(drw ~ onset.melt + (1 |
                              Year), data = DendroClimAICSc, REML = TRUE)
 onset.meltautocor <-
   acf(residuals(onset.meltAIC_modelREML), plot = FALSE)
@@ -946,7 +946,7 @@ overallautocor <-
     P1corplot
   )
 ggsave(
-  "figures/FigS5_Autocorrelation_darea.pdf",
+  "figures/FigS5_Autocorrelation_drw.pdf",
   plot = overallautocor,
   width = 40,
   height = 40,
@@ -987,7 +987,7 @@ models1Sc_Bayes <- DendroClimAICScLong %>%
 models1Sc_Bayes <- DendroClimAICScLong %>%
   group_by(Variable) %>%
   do(estimate = unlist(summary(
-    brm(darea ~ (Value) + (1 | Year), data = ., warmup = 1000, iter = 3000, 
+    brm(drw ~ (Value) + (1 | Year), data = ., warmup = 1000, iter = 3000, 
         cores = 2, chains = 2)
     #control = list(adapt_delta = 0.95)
   )$fixed[2,])) %>% group_by(Variable) %>%
@@ -995,35 +995,35 @@ models1Sc_Bayes <- DendroClimAICScLong %>%
   
 models1Sc_Bayes <- models1Sc_Bayes %>% mutate(Variable_full = recode(Variable, "P1" = "Snow melt", "P2" = "Leaf emergence", "P5" = "Leaf senescence", "pPx" = "Prev. GSL", "Px" = "GSL", "ptsummer" = "Prev. temp. summer", "ptautumn" = "Prev. temp. autumn", "twinter" = "Winter temp.", "tspring" = "Spring temp.", "tsummer" = "Summer temp.", "tautumn" = "Autumn temp.", "ppsummer" = "Prev. summer precip.", "ppautumn" = "Prev. autumn precip.", "pwinter" = "Winter precip.", "pspring" = "Spring precip.", "psummer" = "Summer precip.", "pautumn" = "Autumn precip.", "NDVImodis" = "MODIS max. NDVI", "min.extent" = "Sea ice min. extent", "onset.melt" = "Sea ice melt onset"), Variable_type = recode(Variable, "P1" = "ice", "P2" = "pheno", "P5" = "pheno", "pPx" = "pheno", "Px" = "pheno", "ptsummer" = "temp", "ptautumn" = "temp", "twinter" = "temp", "tspring" = "temp", "tsummer" = "temp", "tautumn" = "temp", "ppsummer" = "precip", "ppautumn" = "precip", "pwinter" = "precip", "pspring" = "precip", "psummer" = "precip", "pautumn" = "precip", "NDVImodis" = "ndvi", "min.extent" = "ice", "onset.melt" = "ice")) 
 
-write.csv(models1Sc_Bayes, file = "outputs/darea_Bayesian_results_table.csv")
+write.csv(models1Sc_Bayes, file = "outputs/Bayesian_results_table_drw.csv")
 
 # Figure 2 Growth Models ----
-P2model <- brm(darea ~ P2 + (1 | Year),  
+P2model <- brm(drw ~ P2 + (1 | Year),  
               data = DendroClimAIC, 
               warmup = 1000, iter = 3000, 
               cores = 2, chains = 2)
 
-P5model <- brm(darea ~ P5 + (1 | Year),  
+P5model <- brm(drw ~ P5 + (1 | Year),  
                data = DendroClimAIC, 
                warmup = 1000, iter = 3000, 
                cores = 2, chains = 2)
 
-pPxmodel <- brm(darea ~ pPx + (1 | Year),  
+pPxmodel <- brm(drw ~ pPx + (1 | Year),  
                 data = DendroClimAIC, 
                 warmup = 1000, iter = 3000, 
                 cores = 2, chains = 2)
 
-Pxmodel <- brm(darea ~ Px + (1 | Year),  
+Pxmodel <- brm(drw ~ Px + (1 | Year),  
                data = DendroClimAIC, 
                warmup = 1000, iter = 3000, 
                cores = 2, chains = 2)
 
-tsummermodel <- brm(darea ~ tsummer + (1 | Year),  
+tsummermodel <- brm(drw ~ tsummer + (1 | Year),  
                     data = DendroClimAIC, 
                     warmup = 1000, iter = 3000, 
                     cores = 2, chains = 2)
 
-tautumnmodel <- brm(darea ~ tautumn + (1 | Year),  
+tautumnmodel <- brm(drw ~ tautumn + (1 | Year),  
                     data = DendroClimAIC, 
                     warmup = 1000, iter = 3000, 
                     cores = 2, chains = 2)
@@ -1043,7 +1043,7 @@ P2plot <- ggplot() +
   stat_lineribbon(data = P2plot_data, aes(x = P2, y = .prediction), .width = c(.95, .80, .50),
                   alpha = 0.2, linetype = 0, fill = "#7200a3") +
   geom_line(data = P2predict, aes(x = x, y = predicted), colour = "#7200a3", size = 1) +
-  geom_point(data = DendroClimAIC, aes(x = P2, y = area), colour = "#7200a3", alpha = 0.5, size = 2) +
+  geom_point(data = DendroClimAIC, aes(x = P2, y = drw), colour = "#7200a3", alpha = 0.5, size = 2) +
   labs(x = "\nLeaf emergence (DOY)", y = "Relative growth\n") +
   theme_JB()
 
@@ -1054,7 +1054,7 @@ P5plot <- ggplot() +
   stat_lineribbon(data = P5plot_data, aes(x = P5, y = .prediction), .width = c(.95, .80, .50),
                   alpha = 0.2, linetype = 0, fill = "#7200a3") +
   geom_line(data = P5predict, aes(x = x, y = predicted), colour = "#7200a3", size = 1) +
-  geom_point(data = DendroClimAIC, aes(x = P5, y = area), colour = "#7200a3", alpha = 0.5, size = 2) +
+  geom_point(data = DendroClimAIC, aes(x = P5, y = drw), colour = "#7200a3", alpha = 0.5, size = 2) +
   labs(x = "\nLeaf senescence (DOY)", y = "Relative growth\n") +
   theme_JB()
 
@@ -1065,7 +1065,7 @@ pPxplot <- ggplot() +
   stat_lineribbon(data = pPxplot_data, aes(x = pPx, y = .prediction), .width = c(.95, .80, .50),
                   alpha = 0.2, linetype = 0, fill = "#7200a3") +
   geom_line(data = pPxpredict, aes(x = x, y = predicted), colour = "#7200a3", size = 1) +
-  geom_point(data = DendroClimAIC, aes(x = pPx, y = area), colour = "#7200a3", alpha = 0.5, size = 2) +
+  geom_point(data = DendroClimAIC, aes(x = pPx, y = drw), colour = "#7200a3", alpha = 0.5, size = 2) +
   labs(x = "\nPrev. Growing Season Length (days)", y = "Relative growth\n") +
   theme_JB()
 
@@ -1076,7 +1076,7 @@ Pxplot <- ggplot() +
   stat_lineribbon(data = Pxplot_data, aes(x = Px, y = .prediction), .width = c(.95, .80, .50),
                   alpha = 0.2, linetype = 0, fill = "#7200a3") +
   geom_line(data = Pxpredict, aes(x = x, y = predicted), colour = "#7200a3", size = 1) +
-  geom_point(data = DendroClimAIC, aes(x = Px, y = area), colour = "#7200a3", alpha = 0.5, size = 2) +
+  geom_point(data = DendroClimAIC, aes(x = Px, y = drw), colour = "#7200a3", alpha = 0.5, size = 2) +
   labs(x = "\nGrowing Season Length (days)", y = "Relative growth\n") +
   theme_JB()
 
@@ -1085,9 +1085,9 @@ tsummerplot_data <- DendroClimAIC %>%
 
 tsummerplot <- ggplot() +
   stat_lineribbon(data = tsummerplot_data, aes(x = tsummer, y = .prediction), .width = c(.95, .80, .50),
-                  alpha = 0.2, linetype = 0, fill = "#7200a3") +
-  geom_line(data = tsummerpredict, aes(x = x, y = predicted), colour = "#7200a3", size = 1) +
-  geom_point(data = DendroClimAIC, aes(x = tsummer, y = area), colour = "#7200a3", alpha = 0.5, size = 2) +
+                  alpha = 0.2, linetype = 0, fill = "#ce0000") +
+  geom_line(data = tsummerpredict, aes(x = x, y = predicted), colour = "#ce0000", size = 1) +
+  geom_point(data = DendroClimAIC, aes(x = tsummer, y = drw), colour = "#ce0000", alpha = 0.5, size = 2) +
   labs(x = "\nSummer Temperature", y = "Relative growth\n") +
   theme_JB()
 
@@ -1096,17 +1096,17 @@ tautumnplot_data <- DendroClimAIC %>%
 
 tautumnplot <- ggplot() +
   stat_lineribbon(data = tautumnplot_data, aes(x = tautumn, y = .prediction), .width = c(.95, .80, .50),
-                  alpha = 0.2, linetype = 0, fill = "#7200a3") +
-  geom_line(data = tautumnpredict, aes(x = x, y = predicted), colour = "#7200a3", size = 1) +
-  geom_point(data = DendroClimAIC, aes(x = tautumn, y = area), colour = "#7200a3", alpha = 0.5, size = 2) +
+                  alpha = 0.2, linetype = 0, fill = "#ce0000") +
+  geom_line(data = tautumnpredict, aes(x = x, y = predicted), colour = "#ce0000", size = 1) +
+  geom_point(data = DendroClimAIC, aes(x = tautumn, y = drw), colour = "#ce0000", alpha = 0.5, size = 2) +
   labs(x = "\nAutumn Temperature", y = "Relative growth\n") +
   theme_JB()
 
 PhenologyGrowthModels <- grid.arrange(P2plot, P5plot, pPxplot, Pxplot, tsummerplot, tautumnplot)
 ggsave(plot = PhenologyGrowthModels,
-  filename = "figures/Fig2_GrowthModels_darea.pdf",
-  width = 20,
-  height = 30,
+  filename = "figures/Fig2_GrowthModels_drw.pdf",
+  width = 25,
+  height = 35,
   units = "cm"
 )
 
@@ -1180,7 +1180,7 @@ ggplot(models1Sc_Bayes,
   scale_colour_manual(values = c("#65c0ed", "#F2AD00", "#7200a3", "#00A08A", "#ce0000"))
 
 ggsave(
-  "figures/Fig3_AllVariables_darea.pdf",
+  "figures/Fig3_AllVariables_drw.pdf",
   width = 20,
   height = 20,
   units = "cm"
