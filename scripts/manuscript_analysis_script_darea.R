@@ -1102,8 +1102,8 @@ tautumnplot <- ggplot() +
   labs(x = "\nAutumn Temperature", y = "Relative growth\n") +
   theme_JB()
 
-PhenologyGrowthModels <- grid.arrange(P2plot, P5plot, pPxplot, Pxplot, tsummerplot, tautumnplot)
-ggsave(plot = PhenologyGrowthModels,
+Fig2_GrowthModels <- grid.arrange(P2plot, P5plot, pPxplot, Pxplot, tsummerplot, tautumnplot)
+ggsave(plot = Fig2_GrowthModels,
   filename = "figures/Fig2_GrowthModels_darea.pdf",
   width = 25,
   height = 35,
@@ -1116,7 +1116,7 @@ models1Sc_Bayes$Variable_full <- as.factor(models1Sc_Bayes$Variable_full)
 models1Sc_Bayes$Estimate <- as.numeric(models1Sc_Bayes$Estimate)
 models1Sc_Bayes$CI_low <- as.numeric(models1Sc_Bayes$CI_low)
 models1Sc_Bayes$CI_high <- as.numeric(models1Sc_Bayes$CI_high)
-ggplot(models1Sc_Bayes,
+Fig3_AllVariables <- ggplot(models1Sc_Bayes,
        aes(
          colour = Variable_type,
          fill = Variable_type,
@@ -1179,8 +1179,8 @@ ggplot(models1Sc_Bayes,
   scale_fill_manual(values = c("#65c0ed", "#F2AD00", "#7200a3", "#00A08A", "#ce0000")) +
   scale_colour_manual(values = c("#65c0ed", "#F2AD00", "#7200a3", "#00A08A", "#ce0000"))
 
-ggsave(
-  "figures/Fig3_AllVariables_darea.pdf",
+ggsave(plot = Fig3_AllVariables, 
+  file = "figures/Fig3_AllVariables_darea.pdf",
   width = 20,
   height = 20,
   units = "cm"
@@ -1198,7 +1198,7 @@ corr_mat <- cor(corr_data, use = "all.obs")
 
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 
-corrplot(corr_mat, method=c("circle"), col=col(200),
+FigS4_Correlation <- corrplot(corr_mat, method=c("circle"), col=col(200),
          type="upper",
          order = 'original',
          addCoef.col = "black",
@@ -1209,9 +1209,9 @@ corrplot(corr_mat, method=c("circle"), col=col(200),
          tl.srt = 45,
          diag = FALSE,
          addgrid.col = NA)
-ggsave(
-  "figures/FigS4_Correlation.pdf",
-  plot = overallautocor,
+
+ggsave(plot = FigS4_Correlation,
+  filename = "figures/FigS4_Correlation.pdf",
   width = 40,
   height = 40,
   units = "cm"
