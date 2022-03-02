@@ -1198,7 +1198,9 @@ corr_mat <- cor(corr_data, use = "all.obs")
 
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 
-FigS4_Correlation <- corrplot(corr_mat, method=c("circle"), col=col(200),
+pdf(file = "figures/FigS4_Correlation.pdf")
+
+corrplot(corr_mat, method=c("circle"), col=col(200),
          type="upper",
          order = 'original',
          addCoef.col = "black",
@@ -1210,9 +1212,4 @@ FigS4_Correlation <- corrplot(corr_mat, method=c("circle"), col=col(200),
          diag = FALSE,
          addgrid.col = NA)
 
-ggsave(plot = FigS4_Correlation,
-  filename = "figures/FigS4_Correlation.pdf",
-  width = 40,
-  height = 40,
-  units = "cm"
-)
+dev.off()

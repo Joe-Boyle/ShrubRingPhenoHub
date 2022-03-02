@@ -1198,21 +1198,18 @@ corr_mat <- cor(corr_data, use = "all.obs")
 
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 
-FigS4_Correlation <- corrplot(corr_mat, method=c("circle"), col=col(200),
-                              type="upper",
-                              order = 'original',
-                              addCoef.col = "black",
-                              tl.cex = 0.8,
-                              cl.cex = 0.8,
-                              number.cex = 0.5,
-                              tl.col = "black",
-                              tl.srt = 45,
-                              diag = FALSE,
-                              addgrid.col = NA)
+pdf(file = "figures/FigS4_Correlation.pdf")
 
-ggsave(plot = FigS4_Correlation,
-       filename = "figures/FigS4_Correlation.pdf",
-       width = 40,
-       height = 40,
-       units = "cm"
-)
+corrplot(corr_mat, method=c("circle"), col=col(200),
+         type="upper",
+         order = 'original',
+         addCoef.col = "black",
+         tl.cex = 0.8,
+         cl.cex = 0.8,
+         number.cex = 0.5,
+         tl.col = "black",
+         tl.srt = 45,
+         diag = FALSE,
+         addgrid.col = NA)
+
+dev.off()
