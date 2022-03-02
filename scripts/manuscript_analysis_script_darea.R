@@ -278,9 +278,9 @@ legend <- function(my_ggp) {
 SDall_nolegend <- SDall + theme(legend.position = "none")
 SDused_nolegend <- SDused + theme(legend.position = "none")
 SDlegend <- legend(SDall)
-grid.arrange(arrangeGrob(SDall_nolegend, SDused_nolegend, ncol = 1),
+SDmulti <- grid.arrange(arrangeGrob(SDall_nolegend, SDused_nolegend, ncol = 1),
              SDlegend, nrow = 1)
-ggsave(
+ggsave(plot = SDmulti,
   "figures/FigS2_SampleDepth.pdf",
   width = 20,
   height = 20,
