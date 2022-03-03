@@ -278,9 +278,9 @@ legend <- function(my_ggp) {
 SDall_nolegend <- SDall + theme(legend.position = "none")
 SDused_nolegend <- SDused + theme(legend.position = "none")
 SDlegend <- legend(SDall)
-grid.arrange(arrangeGrob(SDall_nolegend, SDused_nolegend, ncol = 1),
+SDmulti <- grid.arrange(arrangeGrob(SDall_nolegend, SDused_nolegend, ncol = 1),
              SDlegend, nrow = 1)
-ggsave(
+ggsave(plot = SDmulti,
   "figures/FigS2_SampleDepth.pdf",
   width = 20,
   height = 20,
@@ -732,7 +732,7 @@ pPxcorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = "Previous GSL", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Prev. GSL", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ptsummerAIC_modelREML <-
   lmer(drw ~ ptsummer + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
@@ -744,9 +744,7 @@ ptsummercorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("Previous T"[summer])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Prev. summer temp.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ptautumnAIC_modelREML <-
   lmer(drw ~ ptautumn + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
@@ -758,9 +756,7 @@ ptautumncorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("Previous T"[autumn])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Prev. autumn temp.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 twinterAIC_modelREML <-
   lmer(drw ~ twinter + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 twinterautocor <- acf(residuals(twinterAIC_modelREML), plot = FALSE)
@@ -770,9 +766,7 @@ twintercorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("T"[winter])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Winter temp.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 tspringAIC_modelREML <-
   lmer(drw ~ tspring + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 tspringautocor <- acf(residuals(tspringAIC_modelREML), plot = FALSE)
@@ -782,9 +776,7 @@ tspringcorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("T"[spring])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Spring temp.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 tsummerAIC_modelREML <-
   lmer(drw ~ tsummer + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 tsummerautocor <- acf(residuals(tsummerAIC_modelREML), plot = FALSE)
@@ -794,9 +786,7 @@ tsummercorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("T"[summer])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Summer temp.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 tautumnAIC_modelREML <-
   lmer(drw ~ tautumn + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 tautumnautocor <- acf(residuals(tautumnAIC_modelREML), plot = FALSE)
@@ -806,9 +796,7 @@ tautumncorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("T"[autumn])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Autumn temp.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ppsummerAIC_modelREML <-
   lmer(drw ~ ppsummer + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
@@ -820,9 +808,7 @@ ppsummercorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("Previous P"[summer])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Prev. summer precip.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 ppautumnAIC_modelREML <-
   lmer(drw ~ ppautumn + (1 |
                            Year), data = DendroClimAICSc, REML = TRUE)
@@ -834,9 +820,7 @@ ppautumncorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("Previous P"[autumn])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Prev. autumn precip.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 pwinterAIC_modelREML <-
   lmer(drw ~ pwinter + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 pwinterautocor <- acf(residuals(pwinterAIC_modelREML), plot = FALSE)
@@ -846,9 +830,7 @@ pwintercorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("P"[winter])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Winter precip.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 pspringAIC_modelREML <-
   lmer(drw ~ pspring + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 pspringautocor <- acf(residuals(pspringAIC_modelREML), plot = FALSE)
@@ -858,9 +840,7 @@ pspringcorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("P"[spring])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Spring precip.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 psummerAIC_modelREML <-
   lmer(drw ~ psummer + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 psummerautocor <- acf(residuals(psummerAIC_modelREML), plot = FALSE)
@@ -870,9 +850,7 @@ psummercorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("P"[summer])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+ labs(title = "Summer precip.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 pautumnAIC_modelREML <-
   lmer(drw ~ pautumn + (1 | Year), data = DendroClimAICSc, REML = TRUE)
 pautumnautocor <- acf(residuals(pautumnAIC_modelREML), plot = FALSE)
@@ -882,9 +860,7 @@ pautumncorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = expression(paste("P"[autumn])),
-       x = "",
-       y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+    labs(title = "Autumn precip.", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 NDVImodisAIC_modelREML <-
   lmer(drw ~ NDVImodis + (1 |
                             Year), data = DendroClimAICSc, REML = TRUE)
@@ -908,7 +884,7 @@ min.extentcorplot <-
   geom_hline(aes(yintercept = 0)) + geom_hline(aes(yintercept = 0.145),
                                                colour = "#000099",
                                                linetype = 2) +
-  labs(title = "Minimum sea ice extent", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
+  labs(title = "Min. sea ice extent", x = "", y = "") + geom_segment(mapping = aes(xend = lag, yend = 0)) + theme_JB()
 onset.meltAIC_modelREML <-
   lmer(drw ~ onset.melt + (1 |
                              Year), data = DendroClimAICSc, REML = TRUE)
@@ -997,7 +973,7 @@ models1Sc_Bayes <- models1Sc_Bayes %>% mutate(Variable_full = recode(Variable, "
 
 write.csv(models1Sc_Bayes, file = "outputs/Bayesian_results_table_drw.csv")
 
-# Figure 2 Growth Models ----
+# Figure S6 Growth Models ----
 P2model <- brm(drw ~ P2 + (1 | Year),  
               data = DendroClimAIC, 
               warmup = 1000, iter = 3000, 
@@ -1088,7 +1064,7 @@ tsummerplot <- ggplot() +
                   alpha = 0.2, linetype = 0, fill = "#ce0000") +
   geom_line(data = tsummerpredict, aes(x = x, y = predicted), colour = "#ce0000", size = 1) +
   geom_point(data = DendroClimAIC, aes(x = tsummer, y = drw), colour = "#ce0000", alpha = 0.5, size = 2) +
-  labs(x = "\nSummer Temperature", y = "Relative growth\n") +
+  labs(x = "\nSummer Temperature (˚C)", y = "Relative growth\n") +
   theme_JB()
 
 tautumnplot_data <- DendroClimAIC %>%
@@ -1099,24 +1075,24 @@ tautumnplot <- ggplot() +
                   alpha = 0.2, linetype = 0, fill = "#ce0000") +
   geom_line(data = tautumnpredict, aes(x = x, y = predicted), colour = "#ce0000", size = 1) +
   geom_point(data = DendroClimAIC, aes(x = tautumn, y = drw), colour = "#ce0000", alpha = 0.5, size = 2) +
-  labs(x = "\nAutumn Temperature", y = "Relative growth\n") +
+  labs(x = "\nAutumn Temperature (˚C)", y = "Relative growth\n") +
   theme_JB()
 
 PhenologyGrowthModels <- grid.arrange(P2plot, P5plot, pPxplot, Pxplot, tsummerplot, tautumnplot)
 ggsave(plot = PhenologyGrowthModels,
-  filename = "figures/Fig2_GrowthModels_drw.pdf",
+  filename = "figures/FigS6_GrowthModels_drw.pdf",
   width = 25,
   height = 35,
   units = "cm"
 )
 
-# Figure 3 All Variables ----
+# Figure S7 All Variables ----
 models1Sc_Bayes$Variable_type <- as.factor(models1Sc_Bayes$Variable_type)
 models1Sc_Bayes$Variable_full <- as.factor(models1Sc_Bayes$Variable_full)
 models1Sc_Bayes$Estimate <- as.numeric(models1Sc_Bayes$Estimate)
 models1Sc_Bayes$CI_low <- as.numeric(models1Sc_Bayes$CI_low)
 models1Sc_Bayes$CI_high <- as.numeric(models1Sc_Bayes$CI_high)
-Fig3_AllVariables <- ggplot(models1Sc_Bayes,
+FigS7_AllVariables <- ggplot(models1Sc_Bayes,
        aes(
          colour = Variable_type,
          fill = Variable_type,
@@ -1156,20 +1132,20 @@ Fig3_AllVariables <- ggplot(models1Sc_Bayes,
     labels =  c(
       "Leaf emergence",
       "Leaf senescence",
-      "Previous GSL",
+      "Prev. GSL",
       "GSL",
-      "Previous Summer Temp.",
-      "Previous Autumn Temp.",
-      "Winter Temp.",
-      "Spring Temp.",
-      "Summer Temp.",
-      "Autumn Temp.",
-      "Prev. Summer Precip.",
-      "Prev. Autumn Precip.",
-      "Precip. Winter",
-      "Precip. Spring",
-      "Precip. Summer",
-      "Precip. Autumn",
+      "Prev. summer temp.",
+      "Prev. autumn temp.",
+      "Winter temp.",
+      "Spring temp.",
+      "Summer temp.",
+      "Autumn temp.",
+      "Prev. summer precip.",
+      "Prev. autumn precip.",
+      "Winter precip.",
+      "Spring precip.",
+      "Summer precip.",
+      "Autumn precip.",
       "MODIS max. NDVI",
       "Min. sea ice extent",
       "Sea ice melt onset",
@@ -1179,8 +1155,8 @@ Fig3_AllVariables <- ggplot(models1Sc_Bayes,
   scale_fill_manual(values = c("#65c0ed", "#F2AD00", "#7200a3", "#00A08A", "#ce0000")) +
   scale_colour_manual(values = c("#65c0ed", "#F2AD00", "#7200a3", "#00A08A", "#ce0000"))
 
-ggsave(plot = Fig3_AllVariables, 
-       file = "figures/Fig3_AllVariables_darea.pdf",
+ggsave(plot = FigS7_AllVariables, 
+       file = "figures/FigS7_AllVariables_drw.pdf",
        width = 20,
        height = 20,
        units = "cm"
@@ -1200,13 +1176,14 @@ col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA")
 
 pdf(file = "figures/FigS4_Correlation.pdf")
 
-corrplot(corr_mat, method=c("circle"), col=col(200),
+corrplot(corr_mat, method=c("color"), col=col(200),
          type="upper",
          order = 'original',
          addCoef.col = "black",
          tl.cex = 0.8,
          cl.cex = 0.8,
          number.cex = 0.5,
+         number.digits = 2,
          tl.col = "black",
          tl.srt = 45,
          diag = FALSE,
