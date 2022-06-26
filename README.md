@@ -1,4 +1,4 @@
-# Qikiqtaruk Ecological Monitoring
+# Phenology and Growth of a Dwarf Willow
 
 ### Description
 _This repository contains code and data necessary to replicate data analysis, figures, and tables in __"Summer temperature – but not growing season length – influences growth of a dwarf willow in coastal Arctic tundra"__._
@@ -12,7 +12,7 @@ https://doi.org/10.5281/zenodo.2397996
 ### Authors
 Joseph S. Boyle, Sandra Angers-Blondin, Jakob J. Assmann, Isla H. Myers-Smith
 
-### Contact: Joseph S. Boyle joe.boyle123@gmail.com
+### Contact: Joseph S. Boyle joe.scott.boyle@gmail.com
 
 ### Data use guidelines
 Data are publicly available using a Creative Commons Attribution 4.0 International copyright (CC BY 4.0). Data are fully public but should be appropriately referenced by citing the paper. Although not mandatory, we additionally suggest that data users contact and collaborate with data contributors if this dataset will contribute a substantial proportion of observations used in a particular paper or analysis.
